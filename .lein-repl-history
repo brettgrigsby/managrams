@@ -30,3 +30,7 @@ thing
 (assoc thing :2 [5 6])
 (assoc {} :key1 "value" :key2 "another value")
 thing
+(length "word")
+(count "word")
+exit
+(count "string")

@@ -3,7 +3,8 @@
             [ring.util.http-response :refer :all]
             [schema.core :as s]
             [clojure.string :as str]
-            [clojure.core.reducers :as r]))
+            [clojure.core.reducers :as r]
+            [managrams.primes :as p]))
 
 (def all-words (atom {}))
 
@@ -16,9 +17,14 @@
 (defn strip-ext [word]
   (first (str/split word #"\.")))
 
+(defn matches-for-length [word]
+  (if (> 10 (count word))
+    (match-words word)
+    (p/prime-match-words word)))
+
 (defn anagrams-for [gross-word limit]
   (let [word (strip-ext gross-word)
-        matching-words (match-words word)]
+        matching-words (matches-for-length word)]
     (if (= limit -1)
       matching-words
       (take limit matching-words))))
@@ -44,10 +50,6 @@
     (swap! all-words assoc (word->key word) other-matches)))
 
 (defapi app
-  (GET "/current-words.json" []
-    :return {:words String}
-    (ok (:words @all-words)))
-
   (POST "/words.json" []
     :body-params [words :- [String]]
     {:status 201 :body {:words (update-all-words words)}})
