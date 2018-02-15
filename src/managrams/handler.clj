@@ -7,8 +7,6 @@
 
 (def all-words (atom {}))
 
-(def word-map {"ader" ["dare" "dear"]})
-
 (defn word->key [word]
   (str/join (sort word)))
 
