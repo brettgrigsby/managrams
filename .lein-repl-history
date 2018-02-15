@@ -34,3 +34,6 @@ thing
 (count "word")
 exit
 (count "string")
+(<= 10 10)
+(<= 10 8)
+(<= 10 12)

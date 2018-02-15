@@ -2,6 +2,11 @@
   (:require [clojure.data.int-map :as im]
             [clojure.core.reducers :as r]))
 
+(def dictionary-words (.getFile (clojure.java.io/resource "dictionary.txt")))
+
+(def dictionary-list
+  (clojure.string/split dictionary-words #"\r\n"))
+
 (def all-prime-words (atom (im/int-map)))
 
 (def prime-map {\a 2 \b 3 \c 5 \d 7 \e 11 \f 13 \g 17 \h 19
@@ -10,14 +15,6 @@
 
 (defn prime-product [word]
   (reduce *' (map prime-map word)))
-
-(def word-list-url
-  "https://raw.githubusercontent.com/dwyl/english-words/master/words_alpha.txt")
-
-(def word-list
-  (clojure.string/split (slurp word-list-url) #"\r\n"))
-
-(def filtered-words (filter #(< (count %) 10) word-list))
 
 (defn add-words 
   ([] (im/int-map))
@@ -34,3 +31,10 @@
 
 (defn prime-match-words [word]
   (remove #(= word %) (@all-prime-words (prime-product word))))
+
+(defn reset-small-words []
+  (reset! all-prime-words (im/int-map)))
+
+(defn delete-small-word [word]
+  (let [other-matches (prime-match-words word)]
+    (swap! all-prime-words assoc (prime-product word) other-matches)))

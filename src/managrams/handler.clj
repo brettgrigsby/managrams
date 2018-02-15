@@ -18,7 +18,7 @@
   (first (str/split word #"\.")))
 
 (defn matches-for-length [word]
-  (if (> 10 (count word))
+  (if (> (count word) 10)
     (match-words word)
     (p/prime-match-words word)))
 
@@ -41,18 +41,35 @@
 (defn update-all-words [words]
   (swap! all-words conj (words->hmap words)))
 
-(defn delete-all-words []
+(defn process-new-words [words]
+  (let [big-uns (filter #(> (count %) 10) words)
+        small-fries (filter #(<= (count %) 10) words)]
+    (do 
+      (update-all-words big-uns)
+      (p/update-all-prime-words small-fries))))
+
+(defn reset-big-words []
   (reset! all-words {}))
 
-(defn delete-word [gross-word]
-  (let [word (strip-ext gross-word)
-        other-matches (match-words word)]
+(defn delete-all-words []
+  (do
+    (reset-big-words)
+    (p/reset-small-words)))
+
+(defn delete-big-word [word]
+  (let [other-matches (match-words word)]
     (swap! all-words assoc (word->key word) other-matches)))
+
+(defn delete-word [gross-word]
+  (let [word (strip-ext gross-word)]
+    (if (> (count word) 10)
+      (delete-big-word word)
+      (p/delete-small-word word))))
 
 (defapi app
   (POST "/words.json" []
     :body-params [words :- [String]]
-    {:status 201 :body {:words (update-all-words words)}})
+    {:status 201 :body {:words (process-new-words words)}})
 
   (DELETE "/words/:word" [word]
     {:status 204 :body {:deleted (delete-word word)}})
