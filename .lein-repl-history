@@ -1,0 +1,31 @@
+(require 'managrams.handler)
+(in-ns 'managrams.handler)
+(def thing "read.json")
+thing
+(str/split thing #".")
+(sort "dear")
+(string (sort "dear"))
+(str (sort "dear"))
+(join (sort "dear"))
+(str/join (sort "dear") "")
+(conj (sort "dear")
+)
+(str/split-lines "word")
+{'(\a \d \e \r) ["word"]}
+(str/join (sort "word"))
+exit
+(require 'managrams.handler)
+(in-ns 'managrams.handler)
+(word->key "heythere"
+)
+exit
+(require 'managrams.handler)
+(in-ns 'managrams.handler)
+@all-words
+(take 1 #{4 5 6})
+(def thing {1 [1 2] 2 [3 4]})
+thing
+(assoc thing {2 [5 6]})
+(assoc thing 2 [5 6])
+(assoc thing :2 [5 6])
+(assoc {} :key1 "value" :key2 "another value")
