@@ -37,3 +37,12 @@ exit
 (<= 10 10)
 (<= 10 8)
 (<= 10 12)
+(require 'managrams.primes)
+(.getFile (clojure.java.io/resource "dictionary.txt")
+)
+(.getFile (clojure.java.io/resource "resources/dictionary.txt"))
+(require '[clojure.java.io :as io])
+io
+(io/resource)
+(-> "dictionary.txt" io/resource io/file) 
+exit

@@ -2,12 +2,10 @@
   (:require [clojure.data.int-map :as im]
             [clojure.core.reducers :as r]))
 
-(def dictionary-words (.getFile (clojure.java.io/resource "dictionary.txt")))
+(def dictionary-words (.getFile (clojure.java.io/resource "resources/dictionary.txt")))
 
 (def dictionary-list
   (clojure.string/split dictionary-words #"\r\n"))
-
-(def all-prime-words (atom (im/int-map)))
 
 (def prime-map {\a 2 \b 3 \c 5 \d 7 \e 11 \f 13 \g 17 \h 19
   \i 23 \j 29 \k 31 \l 37 \m 41 \n 43 \o 47 \p 53 \q 59 \r 61
@@ -25,6 +23,8 @@
 
 (defn words->int-map [words]
   (r/fold im/merge add-words words))
+
+(def all-prime-words (atom (words->int-map (filter #(<= (count %) 10) dictionary-list))))
 
 (defn update-all-prime-words [words]
   (swap! all-prime-words conj (words->int-map words)))
