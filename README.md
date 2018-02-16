@@ -10,11 +10,17 @@ I know what you're thinking: won't long words create an integer overflow for you
 
 Because the majority of words come in at 10 letters or less, we get the improved performance of int-map for the majority of cases, but we don't sacrifice the ability to store longer words.
 
+## Dependencies
+
+[Leiningen](https://github.com/technomancy/leiningen/blob/stable/README.md)
+
+Follow the install instructions sited in the link.
+
 ## Usage
 
 ### Run the application locally
 
-`lein ring server-headless <optional port>`
+`lein ring server-headless <optional port - default=3000>`
 
 ### Endpoints
 
