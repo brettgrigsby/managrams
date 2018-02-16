@@ -31,6 +31,16 @@ Follow the install instructions sited in the link.
 - `DELETE /words/:word.json`: Deletes a single word from the data store.
 - `DELETE /words.json`: Deletes all contents of the data store.
 
+### Running Tests
+
+`lein test` will run all the tests living in the root `test` directory.
+
+### What's Lacking
+
+- The endpoints themselves are too dumb. Adding error handling and better responses would be my first addition.
+- It would be pretty easy to remove white space from words to allow us to match phrases as well as words.
+- The words are stored in memory and so do not persist if the server restarts. While loading a complete word list is somewhat trivial, it would be good to add a persistant data store to back up additions that might not be included in the word list.
+
 ### Packaging and running as standalone jar
 
 ```
