@@ -1,6 +1,6 @@
 # Managrams
 
-Managrams is a simple json api for storing and retrieving anagrams for English-language words. 
+Managrams is a simple json api built in Clojure for storing and retrieving anagrams of English-language words. 
 
 ### Why do I care?
 
