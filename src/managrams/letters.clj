@@ -4,7 +4,7 @@
 (def all-words (atom {}))
 
 (defn word->key [word]
-  (str/join (sort word)))
+  (str/join (sort (str/lower-case word))))
 
 (defn match-words [word]
   (remove #(= word %) (@all-words (word->key word))))
@@ -13,7 +13,7 @@
   ([] {})
   ([coll word]
     (let [key (word->key word)]
-      (assoc coll key (conj (or (coll key) #{}) word)))))
+      (assoc coll key (conj (or (coll key) #{}) (str/lower-case word))))))
 
 (defn words->hmap [words]
   (reduce word-map-reducer {} words))
@@ -24,6 +24,7 @@
 (defn reset-big-words []
   (reset! all-words {}))
 
-(defn delete-big-word [word]
-  (let [other-matches (match-words word)]
+(defn delete-big-word [the-word]
+  (let [word (str/lower-case the-word)
+        other-matches (match-words word)]
     (swap! all-words assoc (word->key word) other-matches)))

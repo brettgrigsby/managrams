@@ -1,6 +1,7 @@
 (ns managrams.primes
   (:require [clojure.data.int-map :as im]
-            [clojure.core.reducers :as r]))
+            [clojure.core.reducers :as r]
+            [clojure.string :as str]))
 
 (def all-prime-words (atom (im/int-map)))
 
@@ -9,12 +10,13 @@
   \s 67 \t 71 \u 73 \v 79 \w 83 \x 89 \y 97 \z 101})
 
 (defn prime-product [word]
-  (reduce *' (map prime-map word)))
+  (reduce *' (map prime-map (str/lower-case word))))
 
 (defn add-words 
   ([] (im/int-map))
-  ([intmap word] 
-    (let [key (prime-product word)
+  ([intmap the-word] 
+    (let [word (str/lower-case the-word)
+          key (prime-product word)
           current-words (or (intmap key) #{})]
       (assoc intmap key (conj current-words word)))))
 
@@ -24,12 +26,14 @@
 (defn update-all-prime-words [words]
   (swap! all-prime-words #(merge-with into %1 %2) (words->int-map words)))
 
-(defn prime-match-words [word]
-  (remove #(= word %) (@all-prime-words (prime-product word))))
+(defn prime-match-words [the-word]
+  (let [word (str/lower-case the-word)]
+    (remove #(= word %) (@all-prime-words (prime-product word)))))
 
 (defn reset-small-words []
   (reset! all-prime-words (im/int-map)))
 
-(defn delete-small-word [word]
-  (let [other-matches (prime-match-words word)]
+(defn delete-small-word [the-word]
+  (let [word (str/lower-case the-word)
+        other-matches (prime-match-words word)]
     (swap! all-prime-words assoc (prime-product word) other-matches)))

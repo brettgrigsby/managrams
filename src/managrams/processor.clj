@@ -35,3 +35,12 @@
     (if (> (count word) 10)
       (l/delete-big-word word)
       (p/delete-small-word word))))
+
+(def word-list-url
+  "https://raw.githubusercontent.com/dwyl/english-words/master/words_alpha.txt")
+
+(def word-list
+  (clojure.string/split (slurp word-list-url) #"\r\n"))
+
+(defn feed-dictionary []
+  (process-new-words word-list))
