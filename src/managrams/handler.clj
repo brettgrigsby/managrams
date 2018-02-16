@@ -14,9 +14,6 @@
   (DELETE "/words.json" []
     {:status 204 :body {:deleted (pro/delete-all-words)}})
 
-  (GET "/feed-dictionary" []
-    (ok {:result (not (pro/feed-dictionary))}))
-
   (context "/anagrams" []
     (GET "/:word" [word]
       :query-params [{limit :- Long -1}]
