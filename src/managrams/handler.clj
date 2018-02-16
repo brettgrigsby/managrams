@@ -1,25 +1,17 @@
 (ns managrams.handler
   (:require [compojure.api.sweet :refer :all]
             [ring.util.http-response :refer :all]
-            [schema.core :as s]
             [clojure.string :as str]
             [clojure.core.reducers :as r]
-            [managrams.primes :as p]))
-
-(def all-words (atom {}))
-
-(defn word->key [word]
-  (str/join (sort word)))
-
-(defn match-words [word]
-  (remove #(= word %) (@all-words (word->key word))))
+            [managrams.primes :as p]
+            [managrams.letters :as l]))
 
 (defn strip-ext [word]
   (first (str/split word #"\.")))
 
 (defn matches-for-length [word]
   (if (> (count word) 10)
-    (match-words word)
+    (l/match-words word)
     (p/prime-match-words word)))
 
 (defn anagrams-for [gross-word limit]
@@ -27,43 +19,24 @@
         matching-words (matches-for-length word)]
     (if (= limit -1)
       matching-words
-      (take limit matching-words))))
-
-(defn word-map-reducer
-  ([] {})
-  ([coll word]
-    (let [key (word->key word)]
-      (assoc coll key (conj (or (coll key) []) word)))))
-
-(defn words->hmap [words]
-  (reduce word-map-reducer {} words))
-
-(defn update-all-words [words]
-  (swap! all-words conj (words->hmap words)))
+      (take limit (into [] matching-words)))))
 
 (defn process-new-words [words]
   (let [big-uns (filter #(> (count %) 10) words)
         small-fries (filter #(<= (count %) 10) words)]
     (do 
-      (update-all-words big-uns)
+      (l/update-all-words big-uns)
       (p/update-all-prime-words small-fries))))
-
-(defn reset-big-words []
-  (reset! all-words {}))
 
 (defn delete-all-words []
   (do
-    (reset-big-words)
+    (l/reset-big-words)
     (p/reset-small-words)))
-
-(defn delete-big-word [word]
-  (let [other-matches (match-words word)]
-    (swap! all-words assoc (word->key word) other-matches)))
 
 (defn delete-word [gross-word]
   (let [word (strip-ext gross-word)]
     (if (> (count word) 10)
-      (delete-big-word word)
+      (l/delete-big-word word)
       (p/delete-small-word word))))
 
 (defapi app

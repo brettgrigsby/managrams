@@ -15,14 +15,14 @@
   ([] (im/int-map))
   ([intmap word] 
     (let [key (prime-product word)
-          current-words (or (intmap key) [])]
+          current-words (or (intmap key) #{})]
       (assoc intmap key (conj current-words word)))))
 
 (defn words->int-map [words]
   (r/fold im/merge add-words words))
 
 (defn update-all-prime-words [words]
-  (swap! all-prime-words conj (words->int-map words)))
+  (swap! all-prime-words #(merge-with into %1 %2) (words->int-map words)))
 
 (defn prime-match-words [word]
   (remove #(= word %) (@all-prime-words (prime-product word))))
