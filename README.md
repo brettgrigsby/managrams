@@ -1,4 +1,4 @@
-# managrams
+# Managrams
 
 Managrams is a simple json api for storing and retrieving anagrams for English-language words. 
 
@@ -38,4 +38,4 @@ java -jar target/server.jar
 
 ## License
 
-Copyright ©  FIXME
+Copyright © Nothing To See Here LLC
