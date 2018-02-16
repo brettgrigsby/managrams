@@ -4,7 +4,7 @@ Managrams is a simple json api built in Clojure for storing and retrieving anagr
 
 ### Why do I care?
 
-Managrams takes advantage of the [Fundamental theorem of arithmetic](https://en.wikipedia.org/wiki/Fundamental_theorem_of_arithmetic) to create unique numeric keys for each anagram. Mapping the letters to prime numbers and then using the product of those numbers as the key pointing to the collection of associated words allows to use a more efficient [int-map](https://github.com/clojure/data.int-map) data structure to store our words.
+Managrams takes advantage of the [Fundamental theorem of arithmetic](https://en.wikipedia.org/wiki/Fundamental_theorem_of_arithmetic) to create unique numeric keys for each anagram. Mapping the letters to prime numbers and then using the product of those numbers as the key pointing to the collection of associated words allows to use a more efficient [int-map](https://github.com/clojure/data.int-map) data structure to store our words. The word collections for each themselves are Sets, so we get avoid having to create programmatic solutions to prevent duplicate data.
 
 I know what you're thinking: won't long words create an integer overflow for your key values? You're right! In testing, we see that words around 12 letters long run into the upper limit for integer values we can use as keys, so Managrams optimizes for words of 10 letters or less by storing them in an int-map and longer words are stored in a more common hash-map. In the hash-map, the keys are just the alphabetically sorted letters for each anagram.
 
