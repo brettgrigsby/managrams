@@ -14,7 +14,9 @@ Because the majority of words come in at 10 letters or less, we get the improved
 
 [Leiningen](https://github.com/technomancy/leiningen/blob/stable/README.md)
 
-Follow the install instructions sited in the link.
+If you're using homebrew like me, you can just `brew install leiningen`
+
+Otherwise, follow the install instructions detailed in the link above.
 
 ## Usage
 
