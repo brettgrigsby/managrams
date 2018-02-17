@@ -21,9 +21,8 @@
 (defn process-new-words [words]
   (let [big-uns (filter #(> (count %) 10) words)
         small-fries (filter #(<= (count %) 10) words)]
-    (do 
-      (l/update-all-words big-uns)
-      (p/update-all-prime-words small-fries))))
+    {:letters (l/update-all-words big-uns)
+     :primes (p/update-all-prime-words small-fries)}))
 
 (defn delete-all-words []
   (do
