@@ -25,6 +25,41 @@ Follow the install instructions sited in the link.
 ### Endpoints
 
 - `POST /words.json`: Takes a JSON array of English-language words and adds them to the corpus (data store).
+
+```json
+----- sample request ------
+body:
+
+{
+  "words" : [
+    "read",
+    "dear",
+    "butterballs"
+    ]
+}
+
+----- response -----
+status: 201
+body:
+
+{
+  "words" : {
+    "letters" : {
+      "abbellrsttu" :[
+        "butterballs"
+        ]
+    },
+    "primes" : {
+      "9394" : [
+        "dare", 
+        "dear", 
+        "read"
+        ]
+      }
+    }
+}
+```
+
 - `GET /anagrams/:word.json`:
   - Returns a JSON array of English-language words that are anagrams of the word passed in the URL.
   - This endpoint supports an optional `limit` integer query param to indicate the number of words returned. 
