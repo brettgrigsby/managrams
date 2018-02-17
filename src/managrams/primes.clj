@@ -37,3 +37,6 @@
   (let [word (str/lower-case the-word)
         other-matches (prime-match-words word)]
     (swap! all-prime-words assoc (prime-product word) other-matches)))
+
+(defn current-store-value []
+  @all-prime-words)

@@ -30,6 +30,7 @@ Follow the install instructions sited in the link.
   - This endpoint supports an optional `limit` integer query param to indicate the number of words returned. 
 - `DELETE /words/:word.json`: Deletes a single word from the data store.
 - `DELETE /words.json`: Deletes all contents of the data store.
+- `DELETE /anagrams/:word.json`: Deletes a word an its anagrams from the data store.
 
 ### Running Tests
 

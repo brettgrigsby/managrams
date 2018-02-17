@@ -28,3 +28,6 @@
   (let [word (str/lower-case the-word)
         other-matches (match-words word)]
     (swap! all-words assoc (word->key word) other-matches)))
+
+(defn current-store-value []
+  @all-words)
