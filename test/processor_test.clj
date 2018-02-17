@@ -15,11 +15,6 @@
 
 (def big-anagrams ["excitations" "intoxicates"])
 
-(deftest remove-json-extention-from-word
-  (is (= "newbie" (pro/strip-ext "newbie.json")))
-  (is (= "newbie" (pro/strip-ext "Newbie.json")))
-  (is (= "bigness" (pro/strip-ext "BIGNESS.json"))))
-
 (deftest filter-words-by-lenth-ten
   (is (= ["pasta" "bread" "salad" "tenletters"] (pro/filter-words <= mix-length-words)))
   (is (= ["basketballs" "anagramming"] (pro/filter-words > mix-length-words))))
@@ -50,3 +45,14 @@
   (pro/delete-all-words)
   (is (= [] (pro/anagrams-for "dear" -1)))
   (is (= [] (pro/anagrams-for "excitations" -1))))
+
+(deftest deletes-word-and-anagrams
+  (pro/process-new-words small-anagrams)
+  (pro/process-new-words big-anagrams)
+  (is (= ["dare" "read"] (pro/anagrams-for "dear" -1)))
+  (is (= ["intoxicates"] (pro/anagrams-for "excitations" -1)))
+  
+  (pro/delete-word-and-anagrams "dear")
+  (is (= [] (pro/anagrams-for "dear" -1)))
+  (is (= [] (pro/anagrams-for "read" -1)))
+  (is (= ["intoxicates"] (pro/anagrams-for "excitations" -1))))
