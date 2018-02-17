@@ -2,6 +2,13 @@
   (:use clojure.test)
   (:require [managrams.letters :as l]))
 
+(defn testing-fixture [f]
+  nil
+  (f)
+  (l/reset-big-words))
+
+(use-fixtures :each testing-fixture)
+
 (def word "pizza")
 
 (def words ["pasta" "bread" "salad"])
@@ -50,16 +57,22 @@
   (is (not= ["dare" "dear" "dare" "dear"] (l/match-words "read")))
   (is (= ["dare" "dear"] (l/match-words "read"))))
 
-(deftest remove-words
+(deftest remove-word
   (l/update-all-words anagram-words)
+  (l/update-all-words words)
   (is (= ["dare" "dear"] (l/match-words "read")))
-  
+  (is (= ["bread"] (l/match-words "beard")))
+
   (l/delete-big-word "dare")
-  (is (= ["dear"] (l/match-words "read"))))
+  (is (= ["dear"] (l/match-words "read")))
+  (is (= ["bread"] (l/match-words "beard"))))
 
 (deftest remove-all-words
   (l/update-all-words anagram-words)
+  (l/update-all-words words)
   (is (= ["dare" "dear"] (l/match-words "read")))
+  (is (= ["bread"] (l/match-words "beard")))
   
   (l/reset-big-words)
-  (is (= [] (l/match-words "read"))))
+  (is (= [] (l/match-words "read")))
+  (is (= [] (l/match-words "beard"))))

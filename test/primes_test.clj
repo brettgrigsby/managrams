@@ -2,6 +2,13 @@
   (:use clojure.test)
   (:require [managrams.primes :as p]))
 
+(defn testing-fixture [f]
+  nil
+  (f)
+  (p/reset-small-words))
+
+(use-fixtures :each testing-fixture)
+
 (def word "pizza")
 
 (def words ["pasta" "bread" "salad"])
@@ -51,16 +58,22 @@
   (is (not= ["dare" "dear" "dare" "dear"] (p/prime-match-words "read")))
   (is (= ["dare" "dear"] (p/prime-match-words "read"))))
 
-(deftest remove-words
-  (p/update-all-prime-words mix-words)
+(deftest remove-word
+  (p/update-all-prime-words anagram-words)
+  (p/update-all-prime-words words)
   (is (= ["dare" "dear"] (p/prime-match-words "read")))
+  (is (= ["bread"] (p/prime-match-words "beard")))
   
   (p/delete-small-word "dare")
-  (is (= ["dear"] (p/prime-match-words "read"))))
+  (is (= ["dear"] (p/prime-match-words "read")))
+  (is (= ["bread"] (p/prime-match-words "beard"))))
 
 (deftest remove-all-words
   (p/update-all-prime-words anagram-words)
+  (p/update-all-prime-words words)
   (is (= ["dare" "dear"] (p/prime-match-words "read")))
+  (is (= ["bread"] (p/prime-match-words "beard")))
   
   (p/reset-small-words)
-  (is (= [] (p/prime-match-words "read"))))
+  (is (= [] (p/prime-match-words "read")))
+  (is (= [] (p/prime-match-words "beard"))))

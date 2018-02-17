@@ -4,7 +4,7 @@
             [managrams.letters :as l]))
 
 (defn strip-ext [word]
-  (first (str/split word #"\.")))
+  (str/lower-case (first (str/split word #"\."))))
 
 (defn matches-for-length [word]
   (if (> (count word) 10)
@@ -18,11 +18,18 @@
       matching-words
       (take limit (into [] matching-words)))))
 
+(def length-limit 10)
+
+(defn filter-words [f words]
+  (filter #(f (count %) length-limit) words))
+
 (defn process-new-words [words]
-  (let [big-uns (filter #(> (count %) 10) words)
-        small-fries (filter #(<= (count %) 10) words)]
-    {:letters (l/update-all-words big-uns)
-     :primes (p/update-all-prime-words small-fries)}))
+  (let [big-uns (filter-words > words)
+        small-fries (filter-words <= words)]
+    (do 
+      (l/update-all-words big-uns)
+      (p/update-all-prime-words small-fries)
+      words)))
 
 (defn delete-all-words []
   (do
