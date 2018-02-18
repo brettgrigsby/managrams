@@ -56,3 +56,10 @@
   (is (= [] (pro/anagrams-for "dear" -1)))
   (is (= [] (pro/anagrams-for "read" -1)))
   (is (= ["intoxicates"] (pro/anagrams-for "excitations" -1))))
+
+(deftest finds-maximum-anagrams
+  (pro/process-new-words small-anagrams)
+  (pro/process-new-words big-anagrams)
+  (pro/process-new-words mix-length-words)
+  
+  (is (= #{"dare" "dear" "read"} (pro/maximum-anagrams))))

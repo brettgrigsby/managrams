@@ -40,3 +40,15 @@
   (let [all-words (conj (anagrams-for word -1) word)]
     (doseq [ w all-words]
       (delete-word w))))
+
+(defn find-max-anagrams [store]
+  (val (apply max-key #(count (val %)) store)))
+
+(defn maximum-anagrams []
+  (let [current-letter (l/current-store-value)
+        letter-max (find-max-anagrams current-letter)
+        current-prime (p/current-store-value)
+        prime-max (find-max-anagrams current-prime)]
+    (if (> (count letter-max) (count prime-max))
+      letter-max
+      prime-max)))

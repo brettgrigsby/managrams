@@ -33,6 +33,7 @@ Otherwise, follow the install instructions detailed in the link above.
 - `DELETE /words/:word.json`: Deletes a single word from the data store.
 - `DELETE /words.json`: Deletes all contents of the data store.
 - `DELETE /anagrams/:word.json`: Deletes a word and its anagrams from the data store.
+- `GET /maximum.json`: Returns the largest set of words for a single key (the words with the most anagrams)
 
 ### Running Tests
 
